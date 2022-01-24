@@ -71,20 +71,39 @@
 # ]
 
 # app = Starlette(debug=True, routes=routes)
+# ================================
 
-from typing import Optional
+# from typing import Optional
 
-from fastapi import FastAPI
+# from fastapi import FastAPI
 
-app = FastAPI()
-
-
-@app.get("/")
-async def read_root():
-    return {"Hello": "World"}
+# app = FastAPI()
 
 
-@app.post("/items")
-async def read_item(item: dict, q: Optional[str] = None):
-    print(item)
-    return {"item_id": item, "q": q}
+# @app.get("/")
+# async def read_root():
+#     return {"Hello": "World"}
+
+
+# @app.post("/items")
+# async def read_item(item: dict, q: Optional[str] = None):
+#     print(item)
+#     return {"item_id": item, "q": q}
+
+# ==================================================================
+from starlette.applications import Starlette
+from starlette.routing import Route
+from starlette.responses import JSONResponse
+
+async def submit(request):
+    data = await request.json()
+    print(data)
+    return JSONResponse({"HELLO":"0"})
+
+routes = [
+    Route("/submit", endpoint=submit, methods =["POST"])
+]
+
+app = Starlette(
+    routes = routes
+)
