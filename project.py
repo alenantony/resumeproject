@@ -1,11 +1,10 @@
-from urllib import response
 from starlette.applications import Starlette
 from starlette.routing import Route
 from starlette.responses import JSONResponse
-import requests
-from starlette.responses import PlainTextResponse
 import mysql.connector
 import json
+import urllib
+
 
 mydb = mysql.connector.connect(
 	host="localhost",
@@ -18,93 +17,36 @@ mydb = mysql.connector.connect(
 print(mydb)
 mycursor = mydb.cursor()
 cursor = mydb.cursor()
-# #######################################
-# #######################################
-# #######################################
-# from typing import Optional
 
-# from fastapi import FastAPI
-
-# # global response
-
-
-# app = FastAPI()
-# global json_object
-# @app.get("/")
-# async def read_root():
-#     return ({"Hello": "World"})
-
-
-# @app.post("/items")
-# async def read_item(response: dict, q: Optional[str] = None):
-#     # print(response)
-#     data(response)
-#     return {"hello":"world"}
-
-# def hello():
-
-# mycursor.execute("show tables")
-# for i in mycursor:
-#     print(i)
-
-# response = dict()
-# async def homepage(request):
-#     apiresp = requests.get("http://127.0.0.1:8000/hello")
-#     print("hello")    
-#     # global hello
-#     # # hello = requests.get()
-#     global response
-#     response = apiresp.json()
-#     # print(response)
-#     data(response)
-
-#     return PlainTextResponse("HELLO")
-
-# app = Starlette(debug=True, routes=[
-#     Route('/resumedata', homepage),
-# ])
-# print("hello")
-
-
-# async def homepage(request):
-#     response = "hello"
-
-
-# app = Starlette(debug = True, routes=[
-#     Route('/', homepage)
-# ])
-
-
-# response = {'id':3253, 'coverLetter': 'Some text', 'basics': {'name': 'Richard Hendriks', 'label': 'Programmer', 'image': 'https://i.pravatar.cc/150?img=8', 'email': 'richard.hendriks@mail.com', 'phone': '(912) 555-4321', 'url': 'http://richardhendricks.example.com', 'summary': 'Richard hails from Tulsa. He has earned degrees from the University of Oklahoma and Stanford. (Go Sooners and Cardinal!) Before starting Pied Piper, he worked for Hooli as a part time software developer. While his work focuses on applied information theory, mostly optimizing lossless compression schema of both the length-limited and adaptive variants, his non-work interests range widely, everything from quantum computing to chaos theory. He could tell you about it, but THAT would NOT be a “length-limited” conversation!', 'location': {'address': '2712 Broadway St', 'postalCode': 'CA 94115', 'city': 'San Francisco', 'countryCode': 'US', 'region': 'California'}, 'profiles': [{'network': 'Twitter', 'username': 'neutralthoughts', 'url': 'https://twitter.com/neutralthoughts'}, {'network': 'SoundCloud', 'username': 'dandymusicnl', 'url': 'https://soundcloud.example.com/dandymusicnl'}]}, 'work': [{'name': 'Pied Piper', 'location': 'Palo Alto, CA', 'description': 'Awesome compression company', 'position': 'CEO/President', 'url': 'http://piedpiper.example.com', 'startDate': '2013-12-01', 'endDate': '2014-12-01', 'summary': 'Pied Piper is a multi-platform technology based on a proprietary universal compression algorithm that has consistently fielded high Weisman Scores™ that are not merely competitive, but approach the theoretical limit of lossless compression.', 'highlights': ['Build an algorithm for artist to detect if their music was violating copy right infringement laws', 'Successfully won Techcrunch Disrupt', 'Optimized an algorithm that holds the current world record for Weisman Scores'], 'keywords': ['Javascript', 'React']}], 'volunteer': [{'organization': 'CoderDojo', 'position': 'Teacher', 'url': 'http://coderdojo.example.com/', 'startDate': '2012-01-01', 'endDate': '2013-01-01', 'summary': 'Global movement of free coding clubs for young people.', 'highlights': ["Awarded 'Teacher of the Month'"]}], 'education': [{'institution': 'University of Oklahoma', 'url': 'https://www.ou.edu/', 'area': 'Information Technology', 'studyType': 'Bachelor', 'startDate': '2011-06-01', 'endDate': '2014-01-01', 'score': '4.0', 'courses': ['DB1101 - Basic SQL', 'CS2011 - Java Introduction']}], 'awards': [{'title': 'Digital Compression Pioneer Award', 'date': '2014-11-01', 'awarder': 'Techcrunch', 'summary': 'There is no spoon.'}], 'publications': [{'name': 'Video compression for 3d media', 'publisher': 'Hooli', 'releaseDate': '2014-10-01', 'url': 'http://en.wikipedia.org/wiki/Silicon_Valley_(TV_series)', 'summary': 'Innovative middle-out compression algorithm that changes the way we store data.'}, {'name': 'Video compression for 3d media part 2', 'publisher': 'Hooli', 'releaseDate': '2015-10-01', 'url': 'http://hooli.com', 'summary': 'Innovative middle-out compression algorithm that changes the way we store data. Again!'}], 'skills': [{'name': 'Web Development', 'level': 'Master', 'keywords': ['HTML', 'CSS', 'Javascript']}, {'name': 'Compression', 'level': 'Master', 'keywords': ['Mpeg', 'MP4', 'GIF']}], 'languages': [{'language': 'English', 'fluency': 'Native speaker'}], 'interests': [{'name': 'Wildlife', 'keywords': ['Ferrets', 'Unicorns']}], 'references': [{'name': 'Erlich Bachman', 'reference': 'It is my pleasure to recommend Richard, his performance working as a consultant for Main St. Company proved that he will be a valuable addition to any company.'}], 'projects': [{'name': 'Miss Direction', 'description': 'A mapping engine that misguides you', 'highlights': ['Won award at AIHacks 2016', 'Built by all women team of newbie programmers', 'Using modern technologies such as GoogleMaps, Chrome Extension and Javascript'], 'keywords': ['GoogleMaps', 'Chrome Extension', 'Javascript'], 'startDate': '2016-08-24', 'endDate': '2016-08-24', 'url': 'missdirection.example.com', 'roles': ['Team lead', 'Designer'], 'entity': 'Smoogle', 'type': 'application'}], 'meta': {'canonical': 'https://raw.githubusercontent.com/jsonresume/resume-schema/master/resume.json', 'version': 'v1.0.0', 'lastModified': '2017-12-24T15:53:00'}, '__translation__': {'awards': 'Prizes', 'volunteers': 'Volunteers', 'skills': 'Skills', 'references': 'References', 'publications': 'Publications', 'languages': 'Languages', 'interests': 'Interests', 'education': 'Education', 'summary': 'Summary', 'experience': 'Experience', 'at': 'at'}, 'enableSourceDataDownload': True}
-# response = {'id': 1, 'coverLetter': 'Some text', 'basics': {'name': 'Richard Hendriks', 'label': 'Programmer', 'image': 'https://i.pravatar.cc/150?img=8', 'email': 'richard.hendriks@mail.com', 'phone': '(912) 555-4321', 'url': 'http://richardhendricks.example.com', 'summary': 'Richard hails from Tulsa. He has earned degrees from the University of Oklahoma and Stanford. (Go Sooners and Cardinal!) Before starting Pied Piper, he worked for Hooli as a part time software developer. While his work focuses on applied information theory, mostly optimizing lossless compression schema of both the length-limited and adaptive variants, his non-work interests range widely, everything from quantum computing to chaos theory. He could tell you about it, but THAT would NOT be a “length-limited” conversation!', 'location': {'address': '2712 Broadway St', 'postalCode': 'CA 94115', 'city': 'San Francisco', 'countryCode': 'US', 'region': 'California'}, 'profiles': [{'network': 'Twitter', 'username': 'neutralthoughts', 'url': 'https://twitter.com/neutralthoughts'}, {'network': 'SoundCloud', 'username': 'dandymusicnl', 'url': 'https://soundcloud.example.com/dandymusicnl'}]}, 'work': [{'name': 'Pied Piper', 'location': 'Palo Alto, CA', 'description': 'Awesome compression company', 'position': 'CEO/President', 'url': 'http://piedpiper.example.com', 'startDate': '2013-12-01', 'endDate': '2014-12-01', 'summary': 'Pied Piper is a multi-platform technology based on a proprietary universal compression algorithm that has consistently fielded high Weisman Scores™ that are not merely competitive, but approach the theoretical limit of lossless compression.', 'highlights': ['Build an algorithm for artist to detect if their music was violating copy right infringement laws', 'Successfully won Techcrunch Disrupt', 'Optimized an algorithm that holds the current world record for Weisman Scores'], 'keywords': ['Javascript', 'React']},{'name': 'Pied Piper', 'location': 'Palo Alto, CA', 'description': 'Awesome compression company', 'position': 'CEO/President', 'url': 'http://piedpiper.example.com', 'startDate': '2013-12-01', 'endDate': '2014-12-01', 'summary': 'Pied Piper is a multi-platform technology based on a proprietary universal compression algorithm that has consistently fielded high Weisman Scores™ that are not merely competitive, but approach the theoretical limit of lossless compression.', 'highlights': ['Build an algorithm for artist to detect if their music was violating copy right infringement laws', 'Successfully won Techcrunch Disrupt', 'Optimized an algorithm that holds the current world record for Weisman Scores'], 'keywords': ['Javascript', 'React']}], 'volunteer': [{'organization': 'CoderDojo', 'position': 'Teacher', 'url': 'http://coderdojo.example.com/', 'startDate': '2012-01-01', 'endDate': '2013-01-01', 'summary': 'Global movement of free coding clubs for young people.', 'highlights': ["Awarded 'Teacher of the Month'"]}], 'education': [{'institution': 'University of Oklahoma', 'url': 'https://www.ou.edu/', 'area': 'Information Technology', 'studyType': 'Bachelor', 'startDate': '2011-06-01', 'endDate': '2014-01-01', 'score': '4.0', 'courses': ['DB1101 - Basic SQL', 'CS2011 - Java Introduction']}], 'awards': [{'title': 'Digital Compression Pioneer Award', 'date': '2014-11-01', 'awarder': 'Techcrunch', 'summary': 'There is no spoon.'}], 'publications': [{'name': 'Video compression for 3d media', 'publisher': 'Hooli', 'releaseDate': '2014-10-01', 'url': 'http://en.wikipedia.org/wiki/Silicon_Valley_(TV_series)', 'summary': 'Innovative middle-out compression algorithm that changes the way we store data.'}, {'name': 'Video compression for 3d media part 2', 'publisher': 'Hooli', 'releaseDate': '2015-10-01', 'url': 'http://hooli.com', 'summary': 'Innovative middle-out compression algorithm that changes the way we store data. Again!'}], 'skills': [{'name': 'Web Development', 'level': 'Master', 'keywords': ['HTML', 'CSS', 'Javascript']}, {'name': 'Compression', 'level': 'Master', 'keywords': ['Mpeg', 'MP4', 'GIF']}], 'languages': [{'language': 'English', 'fluency': 'Native speaker'}], 'interests': [{'name': 'Wildlife', 'keywords': ['Ferrets', 'Unicorns']}], 'references': [{'name': 'Erlich Bachman', 'reference': 'It is my pleasure to recommend Richard, his performance working as a consultant for Main St. Company proved that he will be a valuable addition to any company.'}], 'projects': [{'name': 'Miss Direction', 'description': 'A mapping engine that misguides you', 'highlights': ['Won award at AIHacks 2016', 'Built by all women team of newbie programmers', 'Using modern technologies such as GoogleMaps, Chrome Extension and Javascript'], 'keywords': ['GoogleMaps', 'Chrome Extension', 'Javascript'], 'startDate': '2016-08-24', 'endDate': '2016-08-24', 'url': 'missdirection.example.com', 'roles': ['Team lead', 'Designer'], 'entity': 'Smoogle', 'type': 'application'}], 'meta': {'canonical': 'https://raw.githubusercontent.com/jsonresume/resume-schema/master/resume.json', 'version': 'v1.0.0', 'lastModified': '2017-12-24T15:53:00'}, '__translation__': {'awards': 'Prizes', 'volunteers': 'Volunteers', 'skills': 'Skills', 'references': 'References', 'publications': 'Publications', 'languages': 'Languages', 'interests': 'Interests', 'education': 'Education', 'summary': 'Summary', 'experience': 'Experience', 'at': 'at'}, 'enableSourceDataDownload': True}
-
-
-from starlette.applications import Starlette
-from starlette.routing import Route
-from starlette.responses import JSONResponse
 
 async def submit(request):
     response = await request.json()
     data(response)
-    return JSONResponse({"Yes":"Boss"})
+    # print("===")
+    # print(response)
+    return JSONResponse(result)
+
+async def view(request):
+    urllib.parse.urldefrag("/view/{number}")
+    calldata(id)
+    return JSONResponse(view)
 
 routes = [
-    Route("/submit", endpoint = submit, methods = ["POST"])
+    Route("/submit", endpoint = submit, methods = ["POST"]),
+    Route("/view/{number}", endpoint = view, methods = ["GET"])
 ]
 
 app = Starlette(
     routes = routes
 )
 
-
-
-
-
-
+# Insertion
 def data(response):
 
     #basics
-    id = response['id']
+    mycursor.execute("SELECT MAX(id) FROM basics")
+    myresult = mycursor.fetchall()
+    id = myresult[0][0] + 1
     coverLetter = response['coverLetter']
     basics = response['basics']
     name = basics['name']
@@ -126,7 +68,7 @@ def data(response):
     value = (id, name, label, image, email, phone, url, summary,
             address, postalCode, city, countryCode, region, coverLetter)
     mycursor.execute(query, value)
-    mydb.commit()
+    # mydb.commit()
 
     #profiles
     profiles = basics['profiles']
@@ -143,7 +85,7 @@ def data(response):
         query = "INSERT INTO profiles(profileno, id, network, username, url) VALUES(%s, %s, %s, %s, %s)"
         value = (profileno, id, network, profile_username, profile_url)
         mycursor.execute(query, value)
-        mydb.commit()
+        # mydb.commit()
     
     #work
     work = response['work']
@@ -168,7 +110,7 @@ def data(response):
         value = (workno, id, name, location, description, position, 
                 url, startDate, endDate, summary)
         mycursor.execute(query, value)
-        mydb.commit()
+        # mydb.commit()
         #work_highlights
         for item in highlights:
             mycursor.execute("SELECT MAX(highlightsno) FROM work_highlights")
@@ -180,7 +122,7 @@ def data(response):
             query = "insert into work_highlights(workno, highlightsno, highlights) values(%s, %s, %s)"
             value = (workno, highlightsno, item)
             mycursor.execute(query, value)
-            mydb.commit()
+            # mydb.commit()
         #work_keywords
         for item in keywords:
             mycursor.execute("SELECT MAX(keywordsno) FROM work_keywords")
@@ -192,7 +134,7 @@ def data(response):
             query = "insert into work_keywords(workno, keywordsno, keywords) values(%s, %s, %s)"
             value = (workno, keywordsno, item)
             mycursor.execute(query, value)
-            mydb.commit()
+            # mydb.commit()
 
     #volunteer
     volunteer = response['volunteer']
@@ -213,7 +155,7 @@ def data(response):
         query = "insert into volunteer(volno, id, organistaion, position, url, startDate, endDate, summary) values(%s, %s, %s, %s, %s, %s, %s, %s)"
         value = (volno, id, organization, position, url, startDate, endDate, summary)
         mycursor.execute(query, value)
-        mydb.commit()
+        # mydb.commit()
         #volunteer_highlights
         for item in highlights:
             mycursor.execute("SELECT MAX(highlightsno) FROM volunteer_highlights")
@@ -226,7 +168,7 @@ def data(response):
             query = "insert into volunteer_highlights(highlightsno, volno, highlights) values(%s, %s, %s)"
             value = (highlightsno, volno, item)
             mycursor.execute(query, value)
-            mydb.commit()
+            # mydb.commit()
 
     #education
     education = response['education']
@@ -250,7 +192,7 @@ def data(response):
                 values(%s, %s, %s, %s, %s, %s, %s, %s, %s)"
         value = (educationno, id, institution, url, area, studyType, startDate, endDate, score)
         mycursor.execute(query, value)
-        mydb.commit()
+        # mydb.commit()
         #courses
         for item in courses:
             mycursor.execute("SELECT MAX(coursesno) FROM education_courses")
@@ -262,7 +204,7 @@ def data(response):
             query = "insert into education_courses(coursesno, educationno, courses) values(%s, %s, %s)"
             value = (coursesno, educationno, item)
             mycursor.execute(query, value)
-            mydb.commit()
+            # mydb.commit()
 
     #awards
     awards = response['awards']
@@ -280,7 +222,7 @@ def data(response):
         query = "insert into awards(awardno, id, title, date, awarder, summary) values(%s, %s, %s, %s, %s, %s)"
         value = (awardno, id, title, date, awarder, summary)
         mycursor.execute(query, value)
-        mydb.commit()
+        # mydb.commit()
     
     #certificates
     try:
@@ -299,7 +241,7 @@ def data(response):
             query = "insert into certifications(certificateno, id, name, date, url, issuer) values(%s, %s, %s, %s, %s, %s)"
             value = (certificateno, id, name, date, url, issuer)
             mycursor.execute(query, value)
-            mydb.commit()
+            # mydb.commit()
     except:
         print("No Certifications")
     
@@ -320,7 +262,7 @@ def data(response):
         query = "insert into publications(publicationno, id, name, publisher, releaseDate, url, summary) values(%s, %s, %s, %s, %s, %s, %s)"
         value = (publicationno, id, name, publisher, releaseDate, url, summary)
         mycursor.execute(query, value)
-        mydb.commit()
+        # mydb.commit()
 
     #skills
     skills = response['skills']
@@ -337,7 +279,7 @@ def data(response):
         query = "insert into skills(skillno, id, name, level) values(%s, %s, %s, %s)"
         value = (skillno, id, name, level)
         mycursor.execute(query, value)
-        mydb.commit()
+        # mydb.commit()
         #skills_keywords
         for item in keywords:
             mycursor.execute("SELECT MAX(keywordno) FROM skills_keywords")
@@ -349,7 +291,7 @@ def data(response):
             query = "insert into skills_keywords(keywordno, skillno, keywords) values(%s, %s, %s)"
             value = (keywordno, skillno, item)
             mycursor.execute(query, value)
-            mydb.commit()
+            # mydb.commit()
 
     #languages
     languages = response['languages']
@@ -365,7 +307,7 @@ def data(response):
         query = "insert into languages(languageno, id, language, fluency) values(%s, %s, %s, %s)"
         value = (languageno, id, language, fluency)
         mycursor.execute(query, value)
-        mydb.commit()
+        # mydb.commit()
 
     #interests
     interests = response['interests']
@@ -381,7 +323,7 @@ def data(response):
         query = "insert into interests(interestno, id, name) values(%s, %s, %s)"
         value = (interestno, id, name)
         mycursor.execute(query, value)
-        mydb.commit()
+        # mydb.commit()
         #interests_keywords
         for item in keywords:
             mycursor.execute("SELECT MAX(keywordno) FROM interests_keywords")
@@ -393,7 +335,7 @@ def data(response):
             query = "insert into interests_keywords(keywordno, interestno, keywords) values(%s, %s, %s)"
             value = (keywordno, interestno, item)
             mycursor.execute(query, value)
-            mydb.commit()
+            # mydb.commit()
 
     #references
     references = response['references']
@@ -409,7 +351,7 @@ def data(response):
         query = "insert into REFERENCE(referenceno, id, name, reference) values(%s, %s, %s, %s)"
         value = (referenceno, id, name, reference)
         mycursor.execute(query, value)
-        mydb.commit()
+        # mydb.commit()
 
     #projects
     projects = response['projects']
@@ -433,7 +375,7 @@ def data(response):
         query = "insert into projects(projectno, id, name, description, startDate, endDate, url, entity, type) values(%s, %s, %s, %s, %s, %s, %s, %s, %s)"
         value = (projectno, id, name, description, startDate, endDate, url, entity, type)
         mycursor.execute(query, value)
-        mydb.commit()
+        # mydb.commit()
         #projects_highlights
         for item in highlights:
             mycursor.execute("SELECT MAX(highlightsno) FROM project_highlights")
@@ -445,7 +387,7 @@ def data(response):
             query = "insert into project_highlights(highlightsno, projectno, highlights) values(%s, %s, %s)"
             value = (highlightsno, projectno, item)
             mycursor.execute(query, value)
-            mydb.commit()
+            # mydb.commit()
         #projects_keywords
         for item in keywords:
             mycursor.execute("SELECT MAX(keywordno) FROM projects_keywords")
@@ -457,7 +399,7 @@ def data(response):
             query = "insert into projects_keywords(keywordno, projectno, keywords) values(%s, %s, %s)"
             value = (keywordno, projectno, item)
             mycursor.execute(query, value)
-            mydb.commit()
+            # mydb.commit()
         #projects_roles    
         for item in roles:
             mycursor.execute("SELECT MAX(roleno) FROM projects_roles")
@@ -469,14 +411,19 @@ def data(response):
             query = "insert into projects_roles(roleno, projectno, roles) values(%s, %s, %s)"
             value = (roleno, projectno, item)
             mycursor.execute(query, value)
-            mydb.commit()
+            # mydb.commit()
     # mycursor.execute("select json_object('id', basics.id, 'title', awards.title) from basics inner join awards on basics.id = awards.id where basics.id =9200;")
     # myresult = mycursor.fetchall()
     # print(myresult)
-
+    mydb.commit()
+    print("Inserted values into tables")
+    print(id)
+    calldata(id)
 # #################################################
 # #################################################
 
+def calldata(id):
+    # id = 1
     query = "SELECT id, coverLetter FROM basics where id = %s"
     value = (id,)
     mycursor.execute(query, value)
@@ -485,8 +432,6 @@ def data(response):
     json_data = []
     for items in results:
         json_data.append(dict(zip(row_headers, items)))
-
-
 
     #basics:
     query = "SELECT name, label, image, email, phone, url, summary FROM basics where id = %s"
@@ -821,7 +766,7 @@ def data(response):
 
 
 
-    json_data = {}
+    json_data = json_data[0]
     json_data.update(basics)
     json_data.update(work)
     json_data.update(volunteer)
@@ -835,8 +780,9 @@ def data(response):
     json_data.update(references)
     json_data.update(project)
 
-
-
-    print(json_data)
-    response = json.dumps(json_data, indent = 4) 
-    print(response)
+    global result
+    result = json.dumps(json_data, indent = 4)
+    result = json.loads(result)
+    # print(result)
+    print("=====================")
+    return(result)
