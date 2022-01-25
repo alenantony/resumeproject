@@ -3,7 +3,8 @@ from starlette.routing import Route
 from starlette.responses import JSONResponse
 import mysql.connector
 import json
-import urllib
+# import urllib
+from validation import Resume
 
 
 mydb = mysql.connector.connect(
@@ -18,29 +19,32 @@ print(mydb)
 mycursor = mydb.cursor()
 cursor = mydb.cursor()
 
-
 async def submit(request):
     response = await request.json()
+    resp = []
+    resp.append(response)
+    print(resp)
+    resume = [Resume(**p) for p in resp]
+    # print(resume)
+    # print(type(response))
     data(response)
-    # print("===")
-    # print(response)
     return JSONResponse(result)
 
-async def view(request):
-    urllib.parse.urldefrag("/view/{number}")
-    calldata(id)
-    return JSONResponse(view)
+# async def view(request):
+#     urllib.parse.urldefrag("/view/{number}")
+#     calldata(id)
+#     return JSONResponse(view)
 
 routes = [
     Route("/submit", endpoint = submit, methods = ["POST"]),
-    Route("/view/{number}", endpoint = view, methods = ["GET"])
+    # Route("/view/{number}", endpoint = view, methods = ["GET"])
 ]
 
 app = Starlette(
     routes = routes
 )
 
-# Insertion
+# Insertng values to tables
 def data(response):
 
     #basics
