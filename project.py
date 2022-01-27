@@ -23,7 +23,7 @@ async def submit(request):
     response = await request.json()
     resp = []
     resp.append(response)
-    print(resp)
+    # print(resp)
     resume = [Resume(**p) for p in resp]
     # print(resume)
     # print(type(response))
