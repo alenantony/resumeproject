@@ -28,6 +28,7 @@ async def submit(request):
     # print(resume)
     # print(type(response))
     data(response)
+    print(result)
     return JSONResponse(result)
 
 # async def view(request):
@@ -35,8 +36,14 @@ async def submit(request):
 #     calldata(id)
 #     return JSONResponse(view)
 
+async def resume_data(request):
+    id = request.path_params['resume_id']
+    result = calldata(id)
+    return JSONResponse(result)
+
 routes = [
     Route("/submit", endpoint = submit, methods = ["POST"]),
+    Route("/view/{resume_id:int}", endpoint = resume_data)
     # Route("/view/{number}", endpoint = view, methods = ["GET"])
 ]
 
@@ -787,6 +794,6 @@ def calldata(id):
     global result
     result = json.dumps(json_data, indent = 4)
     result = json.loads(result)
-    # print(result)
+    print(result)
     print("=====================")
     return(result)

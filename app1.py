@@ -103,40 +103,6 @@ print(workstartdate)
 print(workenddate)
 print(worksummary)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 '''
 async def app(request):
    return JSONResponse({"re":"vfv"})
@@ -167,3 +133,4 @@ app = Starlette(debug=True, routes=[
     Route('/h', app),
 ])
 '''
+

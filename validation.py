@@ -1,6 +1,7 @@
 from datetime import date
+import re
 from typing import List, Optional
-from pydantic import BaseModel
+from pydantic import BaseModel, validator
 
 
 class Profiles(BaseModel):
@@ -27,6 +28,15 @@ class Basics(BaseModel):
     summary: str
     location: Location
     profiles: List[Profiles]
+
+    @validator('email')
+    def email_validation(email):
+        regex = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b'
+        if (re.fullmatch(regex, email)):
+            return True
+        else:
+            print("Invalid Email")
+            return False
 
 
 class Work(BaseModel):
