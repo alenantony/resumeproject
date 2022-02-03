@@ -14,6 +14,7 @@ DELETE from education_courses;
 DELETE from education;
 delete from volunteer_highlights;
 delete from volunteer;
+delete from work keywords;
 delete from work_highlights;
 delete from work;
 delete from profiles;
@@ -140,3 +141,5 @@ FROM work
 LEFT JOIN work_highlights
 ON work.workno = work_highlights.workno
 where work.id = 920;
+
+DROP TABLE work_keywords;

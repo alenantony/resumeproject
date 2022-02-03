@@ -21,29 +21,37 @@ cursor = mydb.cursor()
 
 async def submit(request):
     response = await request.json()
-    resp = []
-    resp.append(response)
-    # print(resp)
-    resume = [Resume(**p) for p in resp]
-    # print(resume)
-    # print(type(response))
-    data(response)
-    print(result)
+    resume = [Resume(**response)]
+    print(resume)
+    result = data(response)
     return JSONResponse(result)
-
-# async def view(request):
-#     urllib.parse.urldefrag("/view/{number}")
-#     calldata(id)
-#     return JSONResponse(view)
-
+    return JSONResponse({"Hello":"World"})
+    
 async def resume_data(request):
     id = request.path_params['resume_id']
     result = calldata(id)
     return JSONResponse(result)
 
+async def get_all(request):
+    mycursor.execute("Select id from basics")
+    list_of_id = mycursor.fetchall()
+    ids = []
+    for item in list_of_id:
+        ids.append(item[0])
+    # return JSONResponse({"values": ids})
+    complete_data = []
+    for item in ids:
+        try:
+            result = calldata(item)
+        except:
+            print(result)
+        complete_data.append(result)
+    return JSONResponse(complete_data)
+
 routes = [
-    Route("/submit", endpoint = submit, methods = ["POST"]),
-    Route("/view/{resume_id:int}", endpoint = resume_data)
+    Route("/submit", endpoint= submit, methods= ["POST"]),
+    Route("/view/{resume_id:int}", endpoint= resume_data),
+    Route("/getall", endpoint= get_all, methods= ["GET"])
     # Route("/view/{number}", endpoint = view, methods = ["GET"])
 ]
 
@@ -57,7 +65,11 @@ def data(response):
     #basics
     mycursor.execute("SELECT MAX(id) FROM basics")
     myresult = mycursor.fetchall()
-    id = myresult[0][0] + 1
+    print(myresult)
+    if (myresult == [(None,)]):
+        id = 1
+    else:
+        id = myresult[0][0] + 1
     coverLetter = response['coverLetter']
     basics = response['basics']
     name = basics['name']
@@ -429,7 +441,8 @@ def data(response):
     mydb.commit()
     print("Inserted values into tables")
     print(id)
-    calldata(id)
+    result = calldata(id)
+    return result
 # #################################################
 # #################################################
 
@@ -468,12 +481,18 @@ def calldata(id):
 
     #basics:profiles
     profiles = []
-    mycursor.execute('''SELECT network, username, url from profiles where id = 920''')
+    query = "SELECT network, username, url from profiles where id = %s"
+    value = (id,)
+    mycursor.execute(query, value)
+    
     results = mycursor.fetchall()
+    print(results)
     row_headers = [x[0] for x in mycursor.description]
     for item in results:
+        print(item)
         profiles.append(dict(zip(row_headers, item)))
     profiles = {"profiles":profiles}
+    print(profiles)
     basics1[0].update(profiles)
 
     basics = {"basics":basics1[0]}
@@ -791,9 +810,9 @@ def calldata(id):
     json_data.update(references)
     json_data.update(project)
 
-    global result
+    # global result
     result = json.dumps(json_data, indent = 4)
     result = json.loads(result)
-    print(result)
-    print("=====================")
+    # print(result)
+    # print("=====================")
     return(result)

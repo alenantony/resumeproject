@@ -1,13 +1,13 @@
 from datetime import date
 import re
 from typing import List, Optional
-from pydantic import BaseModel, validator
-
+from pydantic import AnyUrl, BaseModel, EmailStr, validator
+from starlette.responses import JSONResponse
 
 class Profiles(BaseModel):
     network: Optional[str]
     username: Optional[str]
-    url: Optional[str]
+    url: AnyUrl
 
 
 class Location(BaseModel):
@@ -21,22 +21,33 @@ class Location(BaseModel):
 class Basics(BaseModel):
     name: str
     label: str
-    image: str
-    email: str
+    image: AnyUrl
+    email: EmailStr
     phone: str
-    url: str
+    url: AnyUrl
     summary: str
     location: Location
     profiles: List[Profiles]
 
-    @validator('email')
-    def email_validation(email):
-        regex = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b'
-        if (re.fullmatch(regex, email)):
-            return True
-        else:
-            print("Invalid Email")
-            return False
+    # @validator('email')
+    # def email_validation(cls, v):
+    #     regex = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b'
+    #     if (re.fullmatch(regex, v)):
+    #         return True
+    #     else: 
+    #         raise ValueError("Email not valid")
+
+    # @validator('image')
+    # def image_validation(cls, v):
+    #     regex
+        
+
+        # a.append("email error")
+        # return v
+        # else: 
+        #     raise ValueError("Email not valid")
+        # return v
+        #     # return False 
 
 
 class Work(BaseModel):
@@ -44,27 +55,27 @@ class Work(BaseModel):
     location: str
     description: Optional[str]
     position: str
-    url: str
+    url: AnyUrl
     startDate: str
     endDate: str
     summary: str
-    highlights: Optional[list]
-    keywords: Optional[list]
+    highlights: Optional[List[str]]
+    keywords: Optional[List[str]]
 
 
 class Volunteer(BaseModel):
     organization: str
     position: str
-    url: str
+    url: AnyUrl
     startDate: str
     endDate: str
     summary: str
-    highlights: list
+    highlights: List[str]
 
 
 class Education(BaseModel):
     institution: str
-    url: str
+    url: AnyUrl
     area: str
     studyType: str
     startDate: str
@@ -83,7 +94,7 @@ class Awards(BaseModel):
 class Certificates(BaseModel):
     name: str
     date: str
-    url: str
+    url: AnyUrl
     issuer: str
 
 
@@ -91,7 +102,7 @@ class Publications(BaseModel):
     name: str
     publisher: str
     releaseDate: str
-    url: str
+    url: AnyUrl
     summary: str
 
 
@@ -130,7 +141,7 @@ class Projects(BaseModel):
 
 
 class Resume(BaseModel):
-    id: Optional[int]
+    id: Optional[str]
     coverLetter: Optional[str]
     basics: Basics
     work: Optional[List[Work]] #Optional[list]
